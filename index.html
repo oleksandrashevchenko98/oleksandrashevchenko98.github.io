@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Hamburger {
+        constructor(size, stuffing) {
+          this.size = size;
+          this.stuffing = stuffing;
+          this.toppings = [];
+        }
+
+        static SIZE_SMALL = {
+          name: "small",
+          price: 50,
+          calories: 20,
+        };
+
+        static SIZE_BIG = {
+          name: "big",
+          price: 100,
+          calories: 40,
+        };
+
+        static STUFFING_CHEESE = {
+          name: "cheese",
+          price: 10,
+          calories: 20,
+        };
+
+        static STUFFING_SALAD = {
+          name: "salad",
+          price: 20,
+          calories: 5,
+        };
+
+        static STUFFING_POTATO = {
+          name: "potato",
+          price: 15,
+          calories: 10,
+        };
+
+        static TOPPING_MAYO = {
+          name: "mayo",
+          price: 20,
+          calories: 5,
+        };
+
+        static TOPPING_SPICE = {
+          name: "spice",
+          price: 15,
+          calories: 0,
+        };
+
+        addTopping(topping) {
+          this.toppings.push(topping);
+        }
+
+        calculate() {
+          let totalCalories = this.size.calories;
+          let totalPrice = this.size.price;
+
+          this.toppings.forEach((topping) => {
+            totalCalories += topping.calories;
+            totalPrice += topping.price;
+          });
+
+          totalCalories += this.stuffing.calories;
+          totalPrice += this.stuffing.price;
+
+          return { calories: totalCalories, price: totalPrice };
+        }
+      }
+
+      // Функція запитує у користувача розмір та начинку гамбургера
+      function createHamburger() {
+        let size = null;
+        do {
+          let sizeInput = prompt(
+            "Виберіть розмір гамбургера: small або big"
+          ).toLowerCase();
+          size =
+            sizeInput === "small"
+              ? Hamburger.SIZE_SMALL
+              : sizeInput === "big"
+              ? Hamburger.SIZE_BIG
+              : null;
+        } while (!size);
+
+        let stuffing = null;
+        do {
+          let stuffingInput = prompt(
+            "Виберіть начинку гамбургера: cheese, salad або potato"
+          ).toLowerCase();
+          stuffing =
+            stuffingInput === "cheese"
+              ? Hamburger.STUFFING_CHEESE
+              : stuffingInput === "salad"
+              ? Hamburger.STUFFING_SALAD
+              : stuffingInput === "potato"
+              ? Hamburger.STUFFING_POTATO
+              : null;
+        } while (!stuffing);
+
+        let hamburger = new Hamburger(size, stuffing);
+
+        let addToppings = confirm("Бажаєте додати добавки?");
+        if (addToppings) {
+          let addTopping = true;
+          do {
+            let topping = prompt(
+              "Виберіть добавку: mayo або spice"
+            ).toLowerCase();
+            if (topping === "mayo") {
+              hamburger.addTopping(Hamburger.TOPPING_MAYO);
+            } else if (topping === "spice") {
+              hamburger.addTopping(Hamburger.TOPPING_SPICE);
+            } else {
+              alert("Такої добавки немає");
+            }
+            addTopping = confirm("Бажаєте додати ще добавку?");
+          } while (addTopping);
+        }
+
+        return hamburger;
+      }
+
+      // Створення гамбургера
+      let hamburger = createHamburger();
+
+      // Розрахунок вартості та калорійності гамбургера
+      let result = hamburger.calculate();
+
+      // Виведення результатів
+      document.write(`Вартість гамбургера: ${result.price} $. `);
+      document.write(`Калорійність гамбургера: ${result.calories} ккал.`);
+    </script>
+  </body>
+</html>
